@@ -1,0 +1,72 @@
+CREATE DATABASE IF NOT EXISTS jobfair_test_db DEFAULT CHARACTER SET utf8   DEFAULT COLLATE utf8_general_ci;
+
+
+USE jobfair_test_db;
+
+CREATE TABLE IF NOT EXISTS COMPANY (
+  ID bigint(20) NOT NULL AUTO_INCREMENT,
+  LINK varchar(255),
+  NAME varchar(255),
+  EMAIL varchar(255),
+  PRIMARY KEY (ID),
+  UNIQUE (LINK)
+) engine=InnoDB;
+
+CREATE TABLE IF NOT EXISTS JOB (
+  ID bigint(20) NOT NULL AUTO_INCREMENT,
+  COMPENSATION varchar(255),
+  ISSUEDATE varchar(255),
+  LOCATION varchar(255),
+  POSITIONNAME varchar(255),
+  POSITIONNUMBER varchar(255),
+  CONTRACTTYPE varchar(255),
+  DESCRIPTION TEXT,
+
+  COMPANY bigint(20),
+  PRIMARY KEY (ID),
+  FOREIGN KEY(COMPANY) references COMPANY(ID)
+) engine=InnoDB;
+
+CREATE TABLE IF NOT EXISTS CANDIDATE (
+  ID bigint(20) NOT NULL AUTO_INCREMENT,
+  EMAIL varchar(255),
+  PASSWORD varchar(255),
+  NAME varchar(255),
+  TOKEN varchar(255),
+  APITOKEN varchar(255),
+  LOCALE varchar(255),
+  RESUME varchar(255),
+  INTRODUCTION varchar(255),
+  WORKETHIC varchar(255),
+
+  PRIMARY KEY (EMAIL)
+) engine=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QUESTION (
+  ID bigint(20) NOT NULL AUTO_INCREMENT,
+  QUESTIONTEXT varchar(255),
+  ANSWER smallint,
+
+  JOB bigint(20),
+  PRIMARY KEY (ID),
+  FOREIGN KEY (JOB) references JOB(ID)
+) engine=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS QUESTIONOPTION (
+  ID bigint(20) NOT NULL AUTO_INCREMENT,
+  OPTIONTEXT varchar(255),
+
+  QUESTION bigint(20),
+  PRIMARY KEY (ID),
+  FOREIGN KEY (QUESTION) references QUESTION(ID)
+) engine=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS SKILL (
+  SKILLNAME varchar(255),
+
+  CANDIDATE bigint(20),
+  PRIMARY KEY (SKILLNAME),
+  FOREIGN KEY (CANDIDATE) references CANDIDATE(ID)
+) engine=InnoDB;

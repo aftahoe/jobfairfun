@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+    <!-- Use @Controller annotations for MVC controller definitions -->
+    <context:component-scan base-package="job.fair.jobfair.jpa.controller"/>
+
+    <bean id="contentNegotiationManager"
+          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="defaultContentType" value="application/json"/>
+    </bean>
+
+    <mvc:annotation-driven/>
+
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+
+    <!-- Include a swagger configuration -->
+    <bean name="/applicationSwaggerConfig" class="swagger.SwaggerConfiguration"/>
+
+    <!-- Support JSON to Java Object conversion -->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"
+          p:registerDefaultFormatters="true"/>
+    <!-- Support JSON to Java Object conversion -->
+
+    <!-- Support MultipartFile -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="250000"/>
+    </bean>
+
+
+    <!-- Exception Handling Support -->
+    <bean id="simpleMappingExceptionResolver"
+          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+
+        <!-- See note below on how this interacts with Spring Boot -->
+        <property name="defaultErrorView" value="error"/>
+        <property name="exceptionAttribute" value="ex"/>
+    </bean>
+</beans>
